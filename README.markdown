@@ -13,7 +13,7 @@ What it looks like
 ==================
 
     class Account
-      include DataMapper::Salesforce::Resource
+      include DataMapper::Adapters::SalesforceAdapter::Resource
 
       def self.default_repository_name
         :salesforce
@@ -32,7 +32,7 @@ What it looks like
     end
 
     class Contact
-      include DataMapper::Salesforce::Resource
+      include DataMapper::Adapters::SalesforceAdapter::Resource
 
       def self.default_repository_name
         :salesforce

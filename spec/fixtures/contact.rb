@@ -1,5 +1,6 @@
 class Contact
-  include DataMapper::Salesforce::Resource
+  include DataMapper::Resource
+  include DataMapper::Adapters::SalesforceAdapter::Property
 
   def self.default_repository_name
     :salesforce
@@ -21,10 +22,12 @@ class Contact
   belongs_to :account
 end
 
-Contact.fix {{
-  :first_name => /\w+/.gen,
-  :last_name  => /\w+/.gen,
-  :email      => /\w+@example.com/.gen,
-  :account    => Account.gen,
-  :has_opted_out_of_email => [true, false].pick,
-}}
+Contact.fixture do
+  {
+    :first_name => /\w+/.gen,
+    :last_name  => /\w+/.gen,
+    :email      => /\w+@example.com/.gen,
+    :account    => Account.gen,
+    :has_opted_out_of_email => [true, false].pick,
+  }
+end

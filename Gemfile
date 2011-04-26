@@ -3,7 +3,7 @@ source :gemcutter
 gemspec
 
 group :test do
-  gem 'rspec',          '~>1.0',    :require => %w(spec)
+  gem 'rspec',          '~>2.0',    :require => 'rspec'
   gem 'rake'
   gem 'rcov'
   gem 'ruby-debug'

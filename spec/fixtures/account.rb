@@ -1,5 +1,6 @@
 class Account
-  include DataMapper::Salesforce::Resource
+  include DataMapper::Resource
+  include DataMapper::Adapters::SalesforceAdapter::Property
 
   def self.default_repository_name
     :salesforce
@@ -18,9 +19,11 @@ class Account
   has n, :contacts
 end
 
-Account.fix {{
-  :name                 => Randgen.first_name,
-  :active               => true,
-  :annual_revenue       => rand(1_000).to_f / 100,
-  :number_of_employees  => (1..10).pick,
-}}
+Account.fixture do
+  {
+    :name                 => Randgen.first_name,
+    :active               => true,
+    :annual_revenue       => rand(1_000).to_f / 100,
+    :number_of_employees  => (1..10).pick,
+  }
+end

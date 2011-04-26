@@ -10,7 +10,7 @@ require 'dm-salesforce-adapter'
 # NOTE: These schemas need to match what's in salesforce.  If you get errors
 # when fetching Account.first, it probably means your schema doesn't match.
 class Account
-  include DataMapper::Salesforce::Resource
+  include DataMapper::Adapters::SalesforceAdapter::Resource
 
   def self.default_repository_name
     :salesforce
@@ -35,7 +35,7 @@ class Account
 end
 
 class Contact
-  include DataMapper::Salesforce::Resource
+  include DataMapper::Adapters::SalesforceAdapter::Resource
 
   def self.default_repository_name
     :salesforce

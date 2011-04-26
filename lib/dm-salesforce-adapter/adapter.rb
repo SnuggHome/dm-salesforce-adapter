@@ -168,5 +168,3 @@ class SalesforceAdapter
     return properties.include?(property.name) ? value[0..14] : value
   end
 end
-
-
