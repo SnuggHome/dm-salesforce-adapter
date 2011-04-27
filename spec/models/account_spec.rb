@@ -24,11 +24,14 @@ describe "Account" do
       a = Account.create(:active => false)
       a.errors.should have_key(:name)
     end
+
     describe "successful creation" do
       let(:account) { Account.create(:name => "Adidas Corporation") }
+
       it "has a 15 character long id" do
         account.id.size.should == 15
       end
+
       it 'is not active by default' do
         account.active.should_not be_true
       end
@@ -39,6 +42,7 @@ describe "Account" do
         account.annual_revenue.should be_nil
       end
     end
+
     describe "successful creation with on-offs" do
       let(:account) { Account.create(:name => "Adidas Corporation", :active => true, :annual_revenue => 4000.25) }
       it 'is active' do
