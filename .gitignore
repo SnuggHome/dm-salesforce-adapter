@@ -11,3 +11,7 @@ Gemfile.lock
 .bundle
 vendor
 *.orig
+*.swp
+*.swo
+*.swn
+
