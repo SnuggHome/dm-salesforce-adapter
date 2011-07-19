@@ -1,16 +1,21 @@
+require 'rubygems'
+
 require 'bundler'
-Bundler::GemHelper.install_tasks
+Bundler.require(:default, :test)
 
-require 'rspec/core/rake_task'
-RSpec::Core::RakeTask.new do |t|
-  t.rspec_opts = %w[--color]
-  t.pattern = 'spec/**/*_spec.rb'
-end
-task :default => :spec
+require 'spec'
+require 'spec/rake/spectask'
 
-RSpec::Core::RakeTask.new(:rcov) do |t|
-  t.rspec_opts = %w[--color]
-  t.pattern = 'spec/**/*_spec.rb'
-  t.rcov = true
-  t.rcov_opts = %w[--exclude spec/,gems/,Library/,.bundle]
+desc "Run specs"
+Spec::Rake::SpecTask.new(:spec) do |t|
+  t.spec_files = [ "spec/spec_helper.rb"] + Dir["spec/**/*_spec.rb" ]
+  t.spec_opts += [ "-fs", "--color", "--loadby", "random" ]
+
+  # Disable rcov for now.  Weird duplicate-include with spec_helper.
+  # t.rcov = ENV.has_key?('NO_RCOV') ? ENV['NO_RCOV'] != 'true' : true
+  t.rcov = false
+  t.rcov_opts += [ '--exclude', '~/.salesforce,gems,vendor,/var/folders,spec,config,tmp' ]
+  t.rcov_opts += [ '--text-summary', '--sort', 'coverage', '--sort-reverse' ]
 end
+
+task :default => 'spec'

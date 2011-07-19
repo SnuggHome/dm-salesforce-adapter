@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe DataMapper::Adapters::SalesforceAdapter::SQL do
+describe SalesforceAdapter::SQL do
   describe "Operator" do
     let(:account) { Account.gen(:number_of_employees => 10) }
     let(:query) { Account.all(:id => account.id) }

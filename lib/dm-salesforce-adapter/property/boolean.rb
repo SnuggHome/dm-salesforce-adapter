@@ -1,23 +1,18 @@
-require 'dm-salesforce-adapter/property'
+module SalesforceAdapter::Property
+  class Boolean < ::DataMapper::Property::Integer
+    FALSE = 0
+    TRUE  = 1
 
+    def load(value)
+      [true, 1, '1', 'true', 'TRUE'].include?(value) ? true : false
+    end
 
-module DataMapper
-  module Adapters
-    class SalesforceAdapter < DataObjectsAdapter
-      module Property
-        class Boolean < ::DataMapper::Property::Integer
-          FALSE = 0
-          TRUE  = 1
+    def typecast(value)
+      [true, 1, '1', 'true', 'TRUE'].include?(value) ? TRUE : FALSE
+    end
 
-          def load(value)
-            [true, 1, '1', 'true', 'TRUE', TRUE].include?(value) ? true : false
-          end
-
-          def typecast(value)
-            [true, 1, '1', 'true', 'TRUE', TRUE].include?(value) ? TRUE : FALSE
-          end
-        end
-      end
+    def custom?
+      true
     end
   end
 end

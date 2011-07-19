@@ -1,21 +1,42 @@
+require 'bundler'
 Bundler.require(:default, :test)
 
-require 'fileutils'
 root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
-require File.join(root, 'lib', 'dm-salesforce-adapter')
-require File.join(root, 'spec', 'fixtures', 'account')
-require File.join(root, 'spec', 'fixtures', 'contact')
+$:.unshift root
 
-sf_dir = ENV["SALESFORCE_DIR"] = File.join(root, 'tmp', 'dot_salesforce')
+require 'logger'
+::DataMapper.logger = Logger.new(root + "/tmp/test.log")
 
-FileUtils.rm_r(sf_dir) if File.directory?(sf_dir)
-FileUtils.mkdir_p(sf_dir)
+require 'spec/fixtures/account'
+require 'spec/fixtures/contact'
 
-log_file = File.open(File.join(root, 'tmp', 'test.log'), 'w')
-log_file.sync = true
-DATABASE_CONFIG = YAML.load_file(File.join(root, 'config', 'database.yml'))
-SALESFORCE_CONFIG = DATABASE_CONFIG['development']['repositories']['salesforce']
+# Default config - needs to be overridden
+sfconfig = {
+    :adapter  => 'salesforce',
+    :username => 'api-user@example.org',
+    :password => 'passwordAPIKEY',
+    :path     => root + "/config/salesforce.wsdl", # /path/to/your/salesforce.wsdl
+    :apidir   => ENV['SALESFORCE_DIR'] || root + "/tmp/soap", # /path/to/cache/classfiles
+    :host     => '',
+}
 
-DataMapper::Logger.new(log_file, 0)
+# Override with database.yml, if present.
+DB_YML = File.join(root, 'config', 'database.yml')
+if File.readable? DB_YML
+    dbconfig = YAML.load_file(DB_YML)
+    raise unless dbconfig.kind_of? Hash
+    sfconfig = dbconfig['development']['repositories']['salesforce']
+end
+
+require 'fileutils'
+api_dir = sfconfig["apidir"]
+wsdl    = sfconfig["path"]
+
+FileUtils.rm_rf(api_dir)
+FileUtils.mkdir_p(api_dir)
+
+raise "require valid configuration" unless
+    File.directory? api_dir and File.readable? wsdl
+
 DataMapper.setup(:default, 'sqlite::memory:')
-DataMapper.setup(:salesforce, SALESFORCE_CONFIG)
+DataMapper.setup(:salesforce, sfconfig)
