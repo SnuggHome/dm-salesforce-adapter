@@ -16,7 +16,6 @@ require 'dm-salesforce-adapter/connection'
 require 'dm-salesforce-adapter/connection/errors'
 require 'dm-salesforce-adapter/soap_wrapper'
 require 'dm-salesforce-adapter/sql'
-require 'dm-salesforce-adapter/version'
 require 'dm-salesforce-adapter/adapter'
 require 'dm-salesforce-adapter/property'
 

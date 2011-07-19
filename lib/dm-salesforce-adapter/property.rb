@@ -1,9 +1,5 @@
-module DataMapper
-  module Adapters
-    class SalesforceAdapter < DataObjectsAdapter
-      module Property
-      end
-    end
+class SalesforceAdapter 
+  module Property
   end
 end
 
