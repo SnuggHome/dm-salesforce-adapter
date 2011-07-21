@@ -5,6 +5,10 @@ module SalesforceAdapter::Property
 
     length 15
 
+    def load(value)
+      super value[0..14]
+    end
+
     def dump(value)
       value[0..14] unless value.blank?
     end
