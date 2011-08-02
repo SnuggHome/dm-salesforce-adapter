@@ -48,20 +48,17 @@ class SalesforceAdapter
     end
 
     def field_name_for(klass_name, column)
-      @@field_names ||= {}
-      @@field_names[[klass_name, column]] ||= begin
-        klass = SalesforceAPI.const_get(klass_name)
-        fields = [column, Inflector.camelize(column.to_s), "#{column}__c".downcase]
-        options = /^(#{fields.join("|")})$/i
-        matches = klass.instance_methods(false).grep(options)
-        if matches.any?
-          matches.first
-        else
-          raise FieldNotFound,
-              "You specified #{column} as a field, but neither #{fields.join(" or ")} exist. " \
-              "Either manually specify the field name with :field, or check to make sure you have " \
-              "provided a correct field name."
-        end
+      klass = SalesforceAPI.const_get(klass_name)
+      fields = [column, Inflector.camelize(column.to_s), "#{column}__c".downcase]
+      options = /^(#{fields.join("|")})$/i
+      matches = klass.instance_methods(false).grep(options)
+      if matches.any?
+        matches.first
+      else
+        raise FieldNotFound,
+            "You specified #{column} as a field, but neither #{fields.join(" or ")} exist. " \
+            "Either manually specify the field name with :field, or check to make sure you have " \
+            "provided a correct field name."
       end
     end
 
