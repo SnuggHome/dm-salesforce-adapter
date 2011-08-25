@@ -1,4 +1,3 @@
-
 class SalesforceAdapter
   include SQL
 
@@ -116,10 +115,6 @@ class SalesforceAdapter
     end
 
     [ execute_select(query).size ]
-  end
-
-  def disable_referential_integrity(repository = :default)
-    yield
   end
 
   private
