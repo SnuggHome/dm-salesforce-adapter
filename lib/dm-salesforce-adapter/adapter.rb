@@ -118,6 +118,10 @@ class SalesforceAdapter
     [ execute_select(query).size ]
   end
 
+  def disable_referential_integrity(repository = :default)
+    yield
+  end
+
   private
   def execute_select(query)
     repository = query.repository
