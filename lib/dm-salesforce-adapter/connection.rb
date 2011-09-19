@@ -18,6 +18,7 @@ class SalesforceAdapter
     def initialize(username, password, wsdl_path, api_dir, organization_id = nil)
       @wrapper = SoapWrapper.new("SalesforceAPI", "Soap", wsdl_path, api_dir)
       @username, @password, @organization_id = URI.unescape(username), password, organization_id
+      @metadata = {}
       login
     end
     attr_reader :user_id, :user_details
@@ -80,6 +81,12 @@ class SalesforceAdapter
 
     def delete(keys)
       call_api(:delete, DeleteError, "deleting", keys)
+    end
+
+    def metadata(sf_object_name)
+      with_reconnection do
+        @metadata[sf_object_name] ||= driver.describeSObject(SalesforceAPI::DescribeSObject.new(sf_object_name)).result
+      end
     end
 
     private
