@@ -71,6 +71,12 @@ class SalesforceAdapter
     handle_server_outage(e)
   end
 
+  def metadata(model)
+    result = connection.metadata(model.salesforce_class)
+  rescue Connection::SOAPError => e
+    handle_server_outage(e)
+  end
+
   def handle_server_outage(error)
     if error.server_unavailable?
       raise Connection::ServerUnavailable, "The salesforce server is currently unavailable"
