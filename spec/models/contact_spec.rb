@@ -1,11 +1,7 @@
-require 'spec_helper'
+require 'spec/spec_helper'
 
 describe "Finding a Contact" do
   let(:valid_id) { DataMapper.repository(:salesforce) { Contact.gen.id } }
-
-  it "makes a valid fixture" do
-    Contact.gen.should be_valid
-  end
 
   it "return the first element" do
     Contact.first(:id => valid_id).should_not be_nil

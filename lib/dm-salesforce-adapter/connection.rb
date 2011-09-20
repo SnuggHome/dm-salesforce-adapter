@@ -50,14 +50,14 @@ class SalesforceAdapter
 
     def field_name_for(klass_name, column)
       klass = SalesforceAPI.const_get(klass_name)
-      fields = [column, Inflector.camelize(column.to_s), "#{column}__c".downcase]
+      fields = [column, Inflector.camelize(column.to_s), "#{Inflector.camelize(column.to_s)}__c", "#{column}__c".downcase]
       options = /^(#{fields.join("|")})$/i
       matches = klass.instance_methods(false).grep(options)
       if matches.any?
         matches.first
       else
         raise FieldNotFound,
-            "You specified #{column} as a field, but neither #{fields.join(" or ")} exist. " \
+            "You specified #{column} as a field, but none of the expected field names exist: #{fields.join(", ")}. " \
             "Either manually specify the field name with :field, or check to make sure you have " \
             "provided a correct field name."
       end
@@ -104,10 +104,10 @@ class SalesforceAdapter
       begin
         result = driver.login(:username => @username, :password => @password).result
       rescue SOAP::FaultError => error
-        if error.faultcode.to_s =~ /INVALID_LOGIN/
-          raise LoginFailed, error.faultstring.to_s
-        else
-          raise error
+        case error.faultcode.text
+        when "sf:INVALID_LOGIN" then raise LoginFailed, error.faultstring.text
+        # ...
+        else raise error
         end
       end
       driver.endpoint_url = result.serverUrl
@@ -134,17 +134,16 @@ class SalesforceAdapter
       yield
     rescue SOAP::FaultError => error
       retry_count ||= 0
-      if error.to_s =~ /INVALID_SESSION_ID/
+
+      case error.faultcode.text
+      when "sf:INVALID_SESSION_ID" then
         DataMapper.logger.debug "Got a invalid session id; reconnecting" if DataMapper.logger
         @driver = nil
         login
         retry_count += 1
         retry unless retry_count > 5
-      else
-        raise error
+      else raise error
       end
-
-      raise SessionTimeout, "The Salesforce session could not be established"
     end
   end
 end
