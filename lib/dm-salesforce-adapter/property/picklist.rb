@@ -6,6 +6,10 @@ module SalesforceAdapter::Property
       @values.map {|value| {:value => value.value, :label => value.label}}
     end
 
+    def custom?
+      true
+    end
+
     private
     def adapter
       model.repository.adapter
