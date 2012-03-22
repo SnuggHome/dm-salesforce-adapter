@@ -12,9 +12,9 @@ Gem::Specification.new do |s|
 
   s.add_dependency "httpclient",     "~> 2.1.5.2"
   s.add_dependency "data_objects",   "~> 0.10.6"
-  s.add_dependency "dm-core",        "~> 1.1.0"
-  s.add_dependency "dm-validations", "~> 1.1.0"
-  s.add_dependency "dm-types",       "~> 1.1.0"
+  s.add_dependency "dm-core",        "~> 1.2.0"
+  s.add_dependency "dm-validations", "~> 1.2.0"
+  s.add_dependency "dm-types",       "~> 1.2.0"
   if RUBY_VERSION.to_f == 1.9
     s.add_dependency "soap4r-ruby1.9", "~> 2.0.0"
   else
