@@ -144,6 +144,14 @@ class SalesforceAdapter
         retry unless retry_count > 5
       else raise error
       end
+    rescue Errno::ECONNRESET => e
+      retry_count ||= 0
+      if retry_count < 5
+        retry_count += 1
+        retry
+      else
+        raise e
+      end
     end
   end
 end
