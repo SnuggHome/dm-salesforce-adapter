@@ -3,14 +3,14 @@ module SalesforceAdapter::Property
     accept_options :serial
     serial true
 
-    length 15
+    length 18
 
     def load(value)
       super value[0..14] unless value.blank?
     end
 
     def dump(value)
-      value[0..14] unless value.blank?
+      value[0..17] unless value.blank?
     end
   end
 end

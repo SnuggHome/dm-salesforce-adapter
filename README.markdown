@@ -1,7 +1,7 @@
 dm-salesforce-adapter
 =====================
 
-This gem provides a Salesforce Adapter under DataMapper 1.1.x.
+This gem provides a Salesforce Adapter under DataMapper 1.[12].x.
 
 Past version support:
 

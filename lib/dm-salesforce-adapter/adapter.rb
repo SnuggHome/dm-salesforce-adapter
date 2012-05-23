@@ -170,6 +170,6 @@ class SalesforceAdapter
   def normalize_id_value(klass, property, value)
     return nil unless value
     properties = Array(klass.send(:salesforce_id_properties)).map { |p| p.to_sym } rescue []
-    return properties.include?(property.name) ? value[0..14] : value
+    return properties.include?(property.name) ? value[0..17] : value
   end
 end

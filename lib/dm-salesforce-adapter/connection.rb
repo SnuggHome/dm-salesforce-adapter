@@ -65,7 +65,14 @@ class SalesforceAdapter
 
     def query(string)
       with_reconnection do
-        driver.query(:queryString => string).result
+        res = driver.query(:queryString => string).result
+        records = res.records
+        while !res.done
+          res = driver.queryMore(:queryLocator => res.queryLocator).result
+          records += res.records
+        end
+        res.records = records 
+        res
       end
     rescue SOAP::FaultError => e
       raise QueryError.new(e.message, [])

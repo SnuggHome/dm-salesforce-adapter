@@ -6,8 +6,8 @@ describe "Account" do
     it "return the first element" do
       Account.first.should_not be_nil
     end
-    it "has a 15 character long id" do
-      Account.first.id.size.should == 15
+    it "has a 18 character long id" do
+      Account.first.id.size.should == 18
     end
   end
 
@@ -26,8 +26,8 @@ describe "Account" do
     end
     describe "successful creation" do
       let(:account) { Account.create(:name => "Adidas Corporation") }
-      it "has a 15 character long id" do
-        account.id.size.should == 15
+      it "has a 18 character long id" do
+        account.id.size.should == 18
       end
       it 'is not active by default' do
         account.active.should_not be_true
