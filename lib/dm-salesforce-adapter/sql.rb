@@ -92,6 +92,8 @@ class SalesforceAdapter
       when Array then "(#{value.map {|v| quote_value(v, property)}.join(", ")})"
       when NilClass then "NULL"
       when String then "'#{value.gsub(/'/, "\\'").gsub(/\\/, %{\\\\})}'"
+      when Date then "#{value.iso8601}"
+      when Time, DateTime then "#{value.iso8601(2)}"
       else "#{value}"
       end
     end
